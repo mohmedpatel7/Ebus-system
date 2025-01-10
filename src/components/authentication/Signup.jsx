@@ -10,7 +10,7 @@ export default function Signup() {
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [validated, setValidated] = useState(false); // For Bootstrap validation
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,34 +18,37 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = validateForm(formData);
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted successfully!", formData);
-    } else {
-      setErrors(newErrors);
-    }
-  };
+    const form = e.currentTarget;
 
-  const validateForm = (data) => {
-    const newErrors = {};
-    if (!data.name) newErrors.name = "Name is required.";
-    if (!data.email) newErrors.email = "Email is required.";
-    if (!data.password) newErrors.password = "Password is required.";
-    if (data.password !== data.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+    if (
+      form.checkValidity() === false ||
+      formData.password !== formData.confirmPassword
+    ) {
+      e.stopPropagation();
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords do not match!"); // You can replace this with a custom message display.
+      }
+    } else {
+      console.log("Form submitted successfully!", formData);
+      // Proceed with form submission (e.g., API call).
     }
-    return newErrors;
+
+    setValidated(true); // Mark the form as validated.
   };
 
   return (
     <div className="signup-container">
       <h2 className="signup-heading">Create an Account</h2>
-      <form onSubmit={handleSubmit} className="signup-form">
+      <form
+        onSubmit={handleSubmit}
+        className={`needs-validation ${validated ? "was-validated" : ""}`}
+        noValidate
+      >
         {/* Name Field */}
         <div className="form-floating mb-3">
           <input
             type="text"
-            className={`form-control ${errors.name ? "is-invalid" : ""}`}
+            className="form-control"
             name="name"
             placeholder="Name"
             value={formData.name}
@@ -53,14 +56,14 @@ export default function Signup() {
             required
           />
           <label htmlFor="floatingName">Name</label>
-          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+          <div className="invalid-feedback">Please provide your name.</div>
         </div>
 
         {/* Email Field */}
         <div className="form-floating mb-3">
           <input
             type="email"
-            className={`form-control ${errors.email ? "is-invalid" : ""}`}
+            className="form-control"
             name="email"
             placeholder="Email"
             value={formData.email}
@@ -68,16 +71,14 @@ export default function Signup() {
             required
           />
           <label htmlFor="floatingEmail">Email</label>
-          {errors.email && (
-            <div className="invalid-feedback">{errors.email}</div>
-          )}
+          <div className="invalid-feedback">Please provide a valid email.</div>
         </div>
 
         {/* Password Field */}
         <div className="form-floating mb-3">
           <input
             type="password"
-            className={`form-control ${errors.password ? "is-invalid" : ""}`}
+            className="form-control"
             name="password"
             placeholder="Password"
             value={formData.password}
@@ -85,18 +86,14 @@ export default function Signup() {
             required
           />
           <label htmlFor="floatingPassword">Password</label>
-          {errors.password && (
-            <div className="invalid-feedback">{errors.password}</div>
-          )}
+          <div className="invalid-feedback">Please provide a password.</div>
         </div>
 
         {/* Confirm Password Field */}
         <div className="form-floating mb-3">
           <input
             type="password"
-            className={`form-control ${
-              errors.confirmPassword ? "is-invalid" : ""
-            }`}
+            className="form-control"
             name="confirmPassword"
             placeholder="Confirm Password"
             value={formData.confirmPassword}
@@ -104,9 +101,7 @@ export default function Signup() {
             required
           />
           <label htmlFor="floatingConfirmPassword">Confirm Password</label>
-          {errors.confirmPassword && (
-            <div className="invalid-feedback">{errors.confirmPassword}</div>
-          )}
+          <div className="invalid-feedback">Please confirm your password.</div>
         </div>
 
         {/* Submit Button */}

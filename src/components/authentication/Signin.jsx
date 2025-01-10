@@ -8,7 +8,7 @@ export default function Signin() {
     password: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [validated, setValidated] = useState(false); // State for Bootstrap validation.
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,30 +16,31 @@ export default function Signin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = validateForm(formData);
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted successfully!", formData);
-    } else {
-      setErrors(newErrors);
-    }
-  };
+    const form = e.currentTarget;
 
-  const validateForm = (data) => {
-    const newErrors = {};
-    if (!data.email) newErrors.email = "Email is required.";
-    if (!data.password) newErrors.password = "Password is required.";
-    return newErrors;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    } else {
+      console.log("Form submitted successfully!", formData);
+      // Proceed with form submission (e.g., API call).
+    }
+
+    setValidated(true); // Mark the form as validated to display feedback.
   };
 
   return (
     <div className="signin-container">
       <h2 className="signin-heading">Sign In to Your Account</h2>
-      <form onSubmit={handleSubmit} className="signin-form">
+      <form
+        onSubmit={handleSubmit}
+        className={`needs-validation ${validated ? "was-validated" : ""}`}
+        noValidate
+      >
         {/* Email Field */}
         <div className="form-floating mb-3">
           <input
             type="email"
-            className={`form-control ${errors.email ? "is-invalid" : ""}`}
+            className="form-control"
             name="email"
             placeholder="Email"
             value={formData.email}
@@ -47,16 +48,14 @@ export default function Signin() {
             required
           />
           <label htmlFor="floatingEmail">Email</label>
-          {errors.email && (
-            <div className="invalid-feedback">{errors.email}</div>
-          )}
+          <div className="invalid-feedback">Please enter a valid email.</div>
         </div>
 
         {/* Password Field */}
         <div className="form-floating mb-3">
           <input
             type="password"
-            className={`form-control ${errors.password ? "is-invalid" : ""}`}
+            className="form-control"
             name="password"
             placeholder="Password"
             value={formData.password}
@@ -64,9 +63,7 @@ export default function Signin() {
             required
           />
           <label htmlFor="floatingPassword">Password</label>
-          {errors.password && (
-            <div className="invalid-feedback">{errors.password}</div>
-          )}
+          <div className="invalid-feedback">Please provide your password.</div>
         </div>
 
         {/* Submit Button */}
