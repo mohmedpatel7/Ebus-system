@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style/style.css";
+import { userSignin } from "../../Redux/features/authentication";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const [formData, setFormData] = useState({
@@ -10,19 +13,31 @@ export default function Signin() {
 
   const [validated, setValidated] = useState(false); // State for Bootstrap validation.
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
 
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      console.log("Form submitted successfully!", formData);
-      // Proceed with form submission (e.g., API call).
+      try {
+        const result = await dispatch(userSignin(formData)).unwrap();
+        if (result) {
+          navigate("/");
+          alert("Signin successfully.");
+        } else {
+          alert("Invalid email or password.");
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     }
 
     setValidated(true); // Mark the form as validated to display feedback.

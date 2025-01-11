@@ -2,11 +2,12 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style/style.css";
+import { BsPlus } from "react-icons/bs";
 
 export default function Navbar() {
   const navigate = useNavigate(); // naviagate object..
-
   const isUser = localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("admin_token");
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light ">
@@ -46,24 +47,21 @@ export default function Navbar() {
                   </Link>
                 </li>
               )}
-              <li className="nav-item me-3 mt-2">
-                <Link className="nav-link" to="">
-                  Buses
-                </Link>
-              </li>
             </div>
 
             {/* Vertical Line and Buttons */}
             <div className="d-flex align-items-center">
-              <button
-                className="btn-search me-2"
-                type="button"
-                onClick={() => navigate("/AdminSignin")}
-              >
-                Admin Signin
-              </button>
+              {!isAdmin && !isUser && (
+                <button
+                  className="btn-search me-2"
+                  type="button"
+                  onClick={() => navigate("/AdminSignin")}
+                >
+                  Admin Signin
+                </button>
+              )}
               <div className="vr me-3"></div> {/* Vertical line */}
-              {!isUser && (
+              {!isUser && !isAdmin && (
                 <>
                   <button
                     className="btn btn-signin me-2"
@@ -81,10 +79,10 @@ export default function Navbar() {
                   </button>
                 </>
               )}
-              {isUser && (
+              {isAdmin && (
                 <>
                   <button
-                    className="btn btn-ps p-3 d-flex align-items-center justify-content-center ms-3 mt-1 me-1 ms-3" // Added 'me-3' for right margin
+                    className="btn btn-ps p-3 d-flex align-items-center justify-content-center ms-3 me-3" // Added 'me-3' for right margin
                     onClick={() => navigate("/Upload")}
                     style={{
                       width: "57px", // Button width
@@ -96,7 +94,31 @@ export default function Navbar() {
                     <BsPlus style={{ fontSize: "30px", color: "#000" }} />{" "}
                     {/* Adjust icon size */}
                   </button>
+                  <button
+                    className="btn btn-signin me-2"
+                    type="button"
+                    onClick={() => {
+                      localStorage.removeItem("admin_token");
+                      navigate("/");
+                      window.alert("Signout successfully..");
+                    }}
+                  >
+                    Sign out
+                  </button>
                 </>
+              )}
+              {isUser && (
+                <button
+                  className="btn btn-signin me-2"
+                  type="button"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/");
+                    window.alert("Signout successfully..");
+                  }}
+                >
+                  Sign out
+                </button>
               )}
             </div>
           </ul>

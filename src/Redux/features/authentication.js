@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const url = "http://localhost:5000";
 
-const AdminSigin = createAsyncThunk(
-  "AdminSigin",
+// Admin Signin
+const AdminSignin = createAsyncThunk(
+  "auth/AdminSignin",
   async (payload, { rejectWithValue }) => {
     try {
       const response = await fetch(`${url}/api/auth/adminLogin`, {
@@ -14,7 +15,6 @@ const AdminSigin = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      // Check if the response is not OK
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData); // Send backend error to the reducer
@@ -27,8 +27,9 @@ const AdminSigin = createAsyncThunk(
   }
 );
 
-const Signup = createAsyncThunk(
-  "Signup",
+// User userSignup
+const userSignup = createAsyncThunk(
+  "auth/userSignup",
   async (payload, { rejectWithValue }) => {
     try {
       const response = await fetch(`${url}/api/auth/registerUser`, {
@@ -39,7 +40,6 @@ const Signup = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      // Check if the response is not OK
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData); // Send backend error to the reducer
@@ -52,8 +52,9 @@ const Signup = createAsyncThunk(
   }
 );
 
-const Signin = createAsyncThunk(
-  "Signup",
+// User Signin
+const userSignin = createAsyncThunk(
+  "auth/Signin",
   async (payload, { rejectWithValue }) => {
     try {
       const response = await fetch(`${url}/api/auth/userLogin`, {
@@ -64,7 +65,6 @@ const Signin = createAsyncThunk(
         body: JSON.stringify(payload),
       });
 
-      // Check if the response is not OK
       if (!response.ok) {
         const errorData = await response.json();
         return rejectWithValue(errorData); // Send backend error to the reducer
@@ -77,6 +77,7 @@ const Signin = createAsyncThunk(
   }
 );
 
+// Slice
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -84,8 +85,68 @@ const authSlice = createSlice({
     error: null,
     data: null,
   },
+  extraReducers: (builder) => {
+    // Admin Signin
+    builder
+      .addCase(AdminSignin.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(AdminSignin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        state.error = null;
 
-  extraReducers: (builder) => {},
+        localStorage.setItem("admin_token", action.payload.admin_token);
+      })
+      .addCase(AdminSignin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || {
+          message: "Unexpected error occurred",
+        };
+      });
+
+    // User userSignup
+    builder
+      .addCase(userSignup.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(userSignup.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        state.error = null;
+
+        localStorage.setItem("token", action.payload.token);
+      })
+      .addCase(userSignup.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || {
+          message: "Unexpected error occurred",
+        };
+      });
+
+    // User Signin
+    builder
+      .addCase(userSignin.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(userSignin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = action.payload;
+        state.error = null;
+
+        localStorage.setItem("token", action.payload.token);
+      })
+      .addCase(userSignin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || {
+          message: "Unexpected error occurred",
+        };
+      });
+  },
 });
 
+export { AdminSignin, userSignup, userSignin };
 export default authSlice.reducer;

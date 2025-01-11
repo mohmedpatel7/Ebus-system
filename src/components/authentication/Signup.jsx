@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style/style.css";
+import { useDispatch } from "react-redux";
+import { userSignup } from "../../Redux/features/authentication";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -12,11 +15,14 @@ export default function Signup() {
 
   const [validated, setValidated] = useState(false); // For Bootstrap validation
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -29,8 +35,17 @@ export default function Signup() {
         alert("Passwords do not match!"); // You can replace this with a custom message display.
       }
     } else {
-      console.log("Form submitted successfully!", formData);
-      // Proceed with form submission (e.g., API call).
+      try {
+        const result = await dispatch(userSignup(formData)).unwrap();
+        if (result) {
+          navigate("/");
+          alert("Signup successful!");
+        } else {
+          alert("Signup failed!");
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     }
 
     setValidated(true); // Mark the form as validated.

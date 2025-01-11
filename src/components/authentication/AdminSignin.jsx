@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style/style.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AdminSignin } from "../../Redux/features/authentication";
 
 export default function Signin() {
   const [formData, setFormData] = useState({
@@ -9,16 +12,31 @@ export default function Signin() {
   });
   const [validated, setValidated] = useState(false); // State to track form validation.
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    if (form.checkValidity() === false || fileError) {
+    if (form.checkValidity() === false) {
       e.stopPropagation();
+    } else {
+      try {
+        const result = await dispatch(AdminSignin(formData)).unwrap();
+        if (result) {
+          navigate("/");
+          alert("Admin singin..");
+        } else {
+          alert("Invalid credentials");
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     }
 
     setValidated(true);
