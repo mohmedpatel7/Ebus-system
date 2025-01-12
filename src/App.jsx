@@ -6,6 +6,7 @@ import Home from "./components/Genral/Home";
 import Signup from "./components/authentication/Signup";
 import Signin from "./components/authentication/Signin";
 import AdminSignin from "./components/authentication/AdminSignin";
+import AddBuses from "./components/buses/addBuses";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/Signin" element={<Signin />} />
           <Route path="/AdminSignin" element={<AdminSignin />} />
+          <Route path="/Upload" element={<AddBuses />} />
         </Routes>
         <Footer />
       </Router>
