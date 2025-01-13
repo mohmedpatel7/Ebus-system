@@ -17,28 +17,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Quick Links Section */}
-          <div className="col-md-4 mb-3">
-            <h5 className="footer-heading">Quick Links</h5>
-            <ul className="footer-links list-unstyled">
-              <li>
-                <Link to="/" className="footer-link">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/features" className="footer-link">
-                  Match
-                </Link>
-              </li>
-              <li>
-                <Link to="/pricing" className="footer-link">
-                  Team
-                </Link>
-              </li>
-            </ul>
-          </div>
-
           {/* Contact Section */}
           <div className="col-md-4 mb-3">
             <h5 className="footer-heading">Contact Us</h5>
