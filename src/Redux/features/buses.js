@@ -7,21 +7,29 @@ const addBus = createAsyncThunk(
   "auth/addBus",
   async (payload, { rejectWithValue }) => {
     try {
+      const token = localStorage.getItem("admin_token");
+      console.log(token);
+      console.log(payload);
+      if (!token) {
+        return rejectWithValue({ message: "No admin token found" });
+      }
       const response = await fetch(`${url}/api/buses/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "admin-token": token,
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        return rejectWithValue(errorData); // Send backend error to the reducer
+        return rejectWithValue(errorData);
       }
 
       return await response.json();
     } catch (error) {
+      console.error("API Error:", error);
       return rejectWithValue({ message: "Internal server error..!" });
     }
   }
@@ -61,7 +69,7 @@ const fetchBusesDetailsUser = createAsyncThunk(
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "admin-token": localStorage.getItem("token"),
+          "auth-token": localStorage.getItem("token"),
         },
       });
 
@@ -82,7 +90,7 @@ const addBusSlice = createSlice({
   initialState: {
     isLoading: false,
     error: null,
-    data: null,
+    data: [],
   },
   extraReducers: (builder) => {
     //Add Bus

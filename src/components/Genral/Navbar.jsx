@@ -40,9 +40,17 @@ export default function Navbar() {
                   Home
                 </Link>
               </li>
+              {isAdmin && (
+                <li className="nav-item me-3 mt-2">
+                  <Link className="nav-link" to="adminBusdetails">
+                    Buses
+                  </Link>
+                </li>
+              )}
+
               {isUser && (
                 <li className="nav-item me-3 mt-2">
-                  <Link className="nav-link" to="">
+                  <Link className="nav-link" to="userBusDetails">
                     Buses
                   </Link>
                 </li>

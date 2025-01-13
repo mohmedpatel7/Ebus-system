@@ -7,6 +7,8 @@ import Signup from "./components/authentication/Signup";
 import Signin from "./components/authentication/Signin";
 import AdminSignin from "./components/authentication/AdminSignin";
 import AddBuses from "./components/buses/addBuses";
+import Busdetails from "./components/buses/Busdetails";
+import BusDetailsUser from "./components/buses/BusDetailsuser";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/Signin" element={<Signin />} />
           <Route path="/AdminSignin" element={<AdminSignin />} />
           <Route path="/Upload" element={<AddBuses />} />
+          <Route path="/adminBusdetails" element={<Busdetails />} />
+          <Route path="/userBusDetails" element={<BusDetailsUser />} />
         </Routes>
         <Footer />
       </Router>

@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch } from "react-redux";
-import {} from "../../Redux/features/";
+import { addBus } from "../../Redux/features/buses";
 import { useNavigate } from "react-router-dom";
 
 export default function AddBuses() {
   const [formData, setFormData] = useState({
     from: "",
     to: "",
-    Bustype: "",
-    contact: "",
-    date: "",
+    busType: "",
+    contactInfo: "",
+    timeDate: "",
   });
 
   const [validated, setValidated] = useState(false); // For Bootstrap validation
@@ -25,17 +25,16 @@ export default function AddBuses() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
       try {
-        const result = await dispatch(userSignup(formData)).unwrap();
+        const result = await dispatch(addBus(formData)).unwrap();
         if (result) {
           navigate("/");
-          alert("Signup successful!");
+          alert("Bus details added successfully..!");
         } else {
-          alert("Signup failed!");
+          alert("Bus adding failed!");
         }
       } catch (error) {
         alert(error.message);
@@ -53,12 +52,12 @@ export default function AddBuses() {
         className={`needs-validation ${validated ? "was-validated" : ""}`}
         noValidate
       >
-        {/* Name Field */}
+        {/* from Field */}
         <div className="form-floating mb-3">
           <input
             type="text"
             className="form-control"
-            name="name"
+            name="from"
             placeholder="From"
             value={formData.from}
             onChange={handleChange}
@@ -83,52 +82,58 @@ export default function AddBuses() {
           <div className="invalid-feedback">Please provide a valid to.</div>
         </div>
 
-        {/* Bustype Field */}
+        {/* busType Field */}
         <div className="form-floating mb-3">
-          <input
-            type="text"
+          <select
             className="form-control"
-            name="Bustype"
-            placeholder="Bustype"
-            value={formData.Bustype}
+            name="busType"
+            value={formData.busType}
             onChange={handleChange}
             required
-          />
-          <label htmlFor="floatingBustype">Bustype</label>
-          <div className="invalid-feedback">Please provide a Bustype.</div>
+          >
+            <option value="" disabled>
+              Select bustype
+            </option>
+            <option value="AC">AC</option>
+            <option value="Non-AC">Non-AC</option>
+            <option value="Sleeper">Sleeper</option>
+            <option value="Seater">Seater</option>
+          </select>
+          <label htmlFor="floatingbusType">Bustype</label>
+          <div className="invalid-feedback">Please provide a bustype.</div>
         </div>
 
         <div className="form-floating mb-3">
           <input
             type="text"
             className="form-control"
-            name="contact"
-            placeholder="Contact"
-            value={formData.contact}
+            name="contactInfo"
+            placeholder="contactinfo"
+            value={formData.contactInfo}
             onChange={handleChange}
             required
           />
-          <label htmlFor="floatingcontact">Contact</label>
-          <div className="invalid-feedback">Please enter contact info.</div>
+          <label htmlFor="floatingcontactInfo">Contactinfo</label>
+          <div className="invalid-feedback">Please enter contact info .</div>
         </div>
 
         <div className="form-floating mb-3">
           <input
-            type="text"
+            type="datetime-local"
             className="form-control"
-            name="date"
+            name="timeDate"
             placeholder="Date"
-            value={formData.date}
+            value={formData.timeDate}
             onChange={handleChange}
             required
           />
-          <label htmlFor="floatingcontact">Date</label>
+          <label htmlFor="floatingcontactInfo">Date</label>
           <div className="invalid-feedback">Please enter Date.</div>
         </div>
 
         {/* Submit Button */}
         <button type="submit" className="btn btn-primary w-100">
-          Sign Up
+          Add
         </button>
       </form>
     </div>
