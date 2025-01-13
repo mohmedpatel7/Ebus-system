@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./style/style.css";
 import { BsPlus } from "react-icons/bs";
 
@@ -31,11 +32,8 @@ export default function Navbar() {
         </button>
 
         {/* Navbar Content */}
-        <div
-          className="collapse navbar-collapse justify-content-between"
-          id="navbarSupportedContent"
-        >
-          <ul className="navbar-nav">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav w-100 d-flex justify-content-between align-items-center">
             <div className="d-flex">
               {/* Links Section */}
               <li className="nav-item me-3 mt-2 ms-1">
