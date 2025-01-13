@@ -18,7 +18,7 @@ export default function Home() {
             Your trusted partner in bus transportation. Book tickets, view
             schedules, and enjoy seamless travel with us.
           </p>
-          {!isAdmin && !isUser && (
+          {isAdmin && isUser && (
             <button
               className="btn btn-light"
               onClick={() => {
