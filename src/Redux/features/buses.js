@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const url = "http://localhost:5000";
+const url = "https://ebus-backend-j2nq.onrender.com";
 
 //Add Bus
 const addBus = createAsyncThunk(
