@@ -6,7 +6,7 @@ import Home from "./components/Genral/Home";
 import Signup from "./components/authentication/Signup";
 import Signin from "./components/authentication/Signin";
 import AdminSignin from "./components/authentication/AdminSignin";
-import AddBuses from "./components/buses/addBuses";
+import AddBuses from "./components/buses/AddBuses";
 import Busdetails from "./components/buses/Busdetails";
 import BusDetailsUser from "./components/buses/BusDetailsuser";
 
