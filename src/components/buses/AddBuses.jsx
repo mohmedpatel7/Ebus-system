@@ -31,7 +31,7 @@ export default function AddBuses() {
       try {
         const result = await dispatch(addBus(formData)).unwrap();
         if (result) {
-          navigate("/");
+          navigate("/adminBusdetails");
           alert("Bus details added successfully..!");
         } else {
           alert("Bus adding failed!");
