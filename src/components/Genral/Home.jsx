@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
+  const isUser = localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("admin_token");
 
   return (
     <div className="home-container">
@@ -16,14 +18,16 @@ export default function Home() {
             Your trusted partner in bus transportation. Book tickets, view
             schedules, and enjoy seamless travel with us.
           </p>
-          <button
-            className="btn btn-light"
-            onClick={() => {
-              navigate("/Signup");
-            }}
-          >
-            Get Started
-          </button>
+          { !isAdmin || !isUser && 
+            <button
+              className="btn btn-light"
+              onClick={() => {
+                navigate("/Signup");
+              }}
+            >
+              Get Started
+            </button>
+          }
         </div>
       </section>
 
