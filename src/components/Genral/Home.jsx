@@ -1,8 +1,11 @@
 import React from "react";
 import "./style/style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="home-container">
       {/* Hero Section */}
@@ -13,7 +16,14 @@ export default function Home() {
             Your trusted partner in bus transportation. Book tickets, view
             schedules, and enjoy seamless travel with us.
           </p>
-          <button className="btn btn-light">Get Started</button>
+          <button
+            className="btn btn-light"
+            onClick={() => {
+              navigate("/Signup");
+            }}
+          >
+            Get Started
+          </button>
         </div>
       </section>
 
